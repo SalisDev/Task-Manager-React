@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Tasks from './components/Tasks';
 import AddTask from './components/AddTask';
+import { v4 } from 'uuid';
 
 function App() {
   const [tasks, setTasks] = useState([
@@ -14,18 +15,6 @@ function App() {
       id: 2,
       title: 'Fazer compras',
       description: 'Comprar leite, pão, ovos e frutas.',
-      isCompleted: false,
-    },
-    {
-      id: 3,
-      title: 'Ler um livro',
-      description: 'Ler pelo menos 30 páginas do livro.',
-      isCompleted: false,
-    },
-    {
-      id: 4,
-      title: 'Exercitar-se',
-      description: 'Fazer 30 minutos de caminhada ou treino em casa.',
       isCompleted: false,
     },
   ]);
@@ -45,13 +34,37 @@ function App() {
   }
 
   function onDeleteTaskClick(taskId) {
-    const newTask = tasks.filter((task) => task.id != taskId);
-    setTasks(newTask);
+    if (window.confirm('realmente deseja deletar a Task?')) {
+      const newTask = tasks.filter((task) => task.id != taskId);
+      setTasks(newTask);
+    }
   }
 
   function onAddTaskSubmit(title, description) {
+    // Valida campos vazios
+    if (!title.trim() || !description.trim()) {
+      return alert('Preencha o título e a descrição da tarefa.');
+    }
+
+    // Verifica duplicidade
+    const duplicate = tasks.some(
+      (task) =>
+        task.title.toLowerCase() === title.trim().toLowerCase() &&
+        task.description.toLowerCase() === description.trim().toLowerCase(),
+    );
+
+    if (
+      duplicate &&
+      !window.confirm(
+        'Já existe uma tarefa com esse título e descrição. Deseja realmente criar?',
+      )
+    ) {
+      return;
+    }
+
+    // Adiciona a nova tarefa
     const newTask = {
-      id: tasks.length + 1,
+      id: v4(),
       title,
       description,
       isCompleted: false,
@@ -67,6 +80,7 @@ function App() {
         </h1>
         <AddTask onAddTaskSubmit={onAddTaskSubmit} />
         <Tasks
+          tasks={tasks}
           onTaskClick={onTaskClick}
           onDeleteTaskClick={onDeleteTaskClick}
         />
