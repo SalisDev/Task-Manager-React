@@ -67,7 +67,6 @@ function App() {
         </h1>
         <AddTask onAddTaskSubmit={onAddTaskSubmit} />
         <Tasks
-          tasks={tasks}
           onTaskClick={onTaskClick}
           onDeleteTaskClick={onDeleteTaskClick}
         />
