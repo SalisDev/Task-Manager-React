@@ -3,7 +3,6 @@ import Tasks from './components/Tasks';
 import AddTask from './components/AddTask';
 import Title from './components/Title';
 import { v4 } from 'uuid';
-
 // Task padrão que sempre aparece quando não há nenhuma tarefa
 const defaultTask = {
   id: 'default',
@@ -11,7 +10,6 @@ const defaultTask = {
   description: 'Adicione tarefas no gerenciador e comece a gerencia-las.',
   isCompleted: false,
 };
-
 function App() {
   // Inicializa o estado a partir do localStorage ou com a task padrão
   const [tasks, setTasks] = useState(() => {
@@ -20,7 +18,6 @@ function App() {
       ? JSON.parse(saved)
       : [defaultTask];
   });
-
   // Salva no localStorage sempre que tasks mudar
   useEffect(() => {
     if (tasks.length === 0) {
@@ -38,7 +35,6 @@ function App() {
       }
     }
   }, [tasks]);
-
   // exempllo de Api que gera dados para teste
 
   // useEffect(() => {
@@ -60,7 +56,6 @@ function App() {
 
   //   fetchTasks();
   // }, []);
-
   function onTaskClick(taskId) {
     const newTask = tasks.map((task) => {
       // preciso atualizar a tarefa
@@ -74,14 +69,12 @@ function App() {
 
     setTasks(newTask);
   }
-
   function onDeleteTaskClick(taskId) {
     if (window.confirm('realmente deseja deletar a Task?')) {
       const newTask = tasks.filter((task) => task.id !== taskId);
       setTasks(newTask);
     }
   }
-
   function onAddTaskSubmit(title, description) {
     // Valida campos vazios
     if (!title.trim() || !description.trim()) {
@@ -113,7 +106,6 @@ function App() {
     };
     setTasks([...tasks, newTask]);
   }
-
   return (
     <div className=" w-screen h-screen bg-blue-500 flex justify-center p-6">
       <div className="w-[500px] space-y-4">
